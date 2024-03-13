@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} КазНИТУ {% endblock %}
+
+{% block content %}
+<header>
+    <h1>Добро пожаловать в Научно-исследовательский институт</h1>
+    <nav>
+        <a href="{% url 'home' %}" {% if request.path == '/' %} class="active" {% endif %}>Главная</a>
+        <a href="{% url 'news-list' %}" {% if request.path == '/news/' %} class="active" {% endif %}>Новости</a>
+        <a href="{% url 'projects' %}" {% if request.path == '/projects/' %} class="active" {% endif %}>Проекты</a>
+        <a href="{% url 'researcher-list' %}" {% if request.path == '/researchers/' %} class="active" {% endif %}>Исследователи</a>
+        <a href="{% url 'article-list' %}" {% if request.path == '/articles/' %} class="active" {% endif %}>Научные статьи</a>
+        <a href="{% url 'event-list' %}" {% if request.path == '/events/' %} class="active" {% endif %}>События</a>
+    </nav>
+</header>
+<main>
+    <section class="slide">
+        <div class="slider">
+            <div class="list">
+                {% for slide in slides %}
+                    <div class="item">
+                        <img src="{{ slide.photo.url }}" alt="image">
+                        <p>{{ slide.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+    </section>
+    <section class="news-section">
+        <h2>Последние новости</h2>
+        {% for news in latest_news %}
+            <article class="news-item">
+                <h3>{{ news.title }}</h3>
+                {% if news.photo %}
+                    <img src="{{ news.photo.url }}" alt="{{ news.title }}">
+                {% endif %}
+                <p>{{ news.description }}</p>
+                <p>{{ news.created_at }}</p>
+            </article>
+        {% empty %}
+            <p>Новостей пока нет.</p>
+        {% endfor %}
+    </section>
+    <section class="about-section">
+    {% for about_us in about_us_list %}
+        <div class="about-item">
+            <h2>{{ about_us.title }}</h2>
+            {% if about_us.image %}
+                <img src="{{ about_us.image.url }}">
+            {% endif %}
+            <p>{{ about_us.text }}</p>
+        </div>
+        {% empty %}
+            <p>Информация о нас временно недоступна.</p>
+    {% endfor %}
+</section>
+
+    </main>
+    <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <h3>Контакты</h3>
+            <p>ул. Сатпаева, 22а
+                050013, Алматы
+                Республика Казахстан</p>
+            <p>Телефон: +7 (123) 456-78-90</p>
+            <p>Email: info@example.com</p>
+        </div>
+        <div class="footer-right">
+            <h3>Социальные сети</h3>
+            <ul class="social-links">
+                <li><a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook"></a></li>
+                <li><a href="#"><img src="{% static 'images/twitter.png' %}" alt="Twitter"></a></li>
+                <li><a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 КазНИТУ. Все права защищены.</p>
+    </div>
+</footer>
+
+
+<script>
+    let list = document.querySelector('.slider .list');
+    let items = document.querySelectorAll('.slider .list .item');
+    let prev = document.getElementById('prev');
+    let next = document.getElementById('next');
+    let intervalId;
+
+    let active = 0;
+    let lengthItems = items.length - 1;
+    function nextSlide() {
+        active = active === lengthItems ? 0 : active + 1;
+        reloadSlider();
+    }
+    function prevSlide() {
+        active = active === 0 ? lengthItems : active - 1;
+        reloadSlider();
+    }
+    function goToSlide(index) {
+        active = index;
+        reloadSlider();
+    }
+    function reloadSlider() {
+        let checkLeft = items[active].offsetLeft;
+        list.style.left = -checkLeft + 'px';
+    }
+    function startAutoSlide() {
+        intervalId = setInterval(nextSlide, 5000);
+    }
+    function stopAutoSlide() {
+        clearInterval(intervalId);
+    }
+    prev.addEventListener('click', () => {
+        stopAutoSlide();
+        prevSlide();
+    });
+
+    next.addEventListener('click', () => {
+        stopAutoSlide();
+        nextSlide();
+    });
+    startAutoSlide();
+</script>
+
+
+{% endblock %}

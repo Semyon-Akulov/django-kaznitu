@@ -1,0 +1,50 @@
+<main>
+        <section class="slide">
+            <div class="slider">
+                <div class="list">
+                    {% for slide in slide %}
+                        <div class="item">
+                            <img src="{{ slide.photo.url }}" alt="image">
+                            <p>{{ slide.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="buttons">
+                <button id="prev"><</button>
+                <button id="next">></button>
+            </div>
+        </section>
+    </main>
+    <script>
+        let list = document.querySelector('.slider .list');
+        let items = document.querySelectorAll('.slider .list .item');
+        let prev = document.getElementById('prev');
+        let next = document.getElementById('next');
+
+        let active = 0;
+        let lengthItems = items.length - 1;
+
+        next.onclick = function () {
+            if (active + 1 > lengthItems) {
+                active = 0;
+            } else {
+                active++;
+            }
+            reloadSlider();
+        }
+
+        prev.onclick = function () {
+            if (active - 1 < 0) {
+                active = lengthItems;
+            } else {
+                active--;
+            }
+            reloadSlider();
+        }
+
+        function reloadSlider() {
+            let checkLeft = items[active].offsetLeft;
+            list.style.left = -checkLeft + 'px';
+        }
+    </script>

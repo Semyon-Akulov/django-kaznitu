@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% endblock %}
+{% block content %}
+    <nav>
+    <a href="{% url 'home' %}" {% if request.path == '/' %} class="active" {% endif %}>Главная</a>
+    <a href="{% url 'news-list' %}" {% if request.path == '/news/' %} class="active" {% endif %}>Новости</a>
+    <a href="{% url 'projects' %}" {% if request.path == '/projects/' %} class="active" {% endif %}>Проекты</a>
+    <a href="{% url 'researcher-list' %}" {% if request.path == '/researchers/' %} class="active" {% endif %}>Исследователи</a>
+    <a href="{% url 'article-list' %}" {% if request.path == '/articles/' %} class="active" {% endif %}>Научные статьи</a>
+    <a href="{% url 'event-list' %}" {% if request.path == '/events/' %} class="active" {% endif %}>События</a>
+</nav>
+    <section class="projects-section">
+        <h2>Наши проекты</h2>
+        <div class="project-list">
+            {% for project in project_list %}
+                <div class="project-item">
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description }}</p>
+                </div>
+            {% empty %}
+                <p>Нет доступных проектов.</p>
+            {% endfor %}
+        </div>
+    </section>
+    </div>
+{% endblock %}

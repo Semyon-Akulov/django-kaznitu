@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+    <nav>
+    <a href="{% url 'home' %}" {% if request.path == '/' %} class="active" {% endif %}>Главная</a>
+    <a href="{% url 'news-list' %}" {% if request.path == '/news/' %} class="active" {% endif %}>Новости</a>
+    <a href="{% url 'projects' %}" {% if request.path == '/projects/' %} class="active" {% endif %}>Проекты</a>
+    <a href="{% url 'researcher-list' %}" {% if request.path == '/researchers/' %} class="active" {% endif %}>Исследователи</a>
+    <a href="{% url 'article-list' %}" {% if request.path == '/articles/' %} class="active" {% endif %}>Научные статьи</a>
+    <a href="{% url 'event-list' %}" {% if request.path == '/events/' %} class="active" {% endif %}>События</a>
+</nav>
+    <div class="container">
+        <h1>События</h1>
+        <div class="event-list">
+            {% for event in event_list %}
+                <div class="event-item">
+                    <h2>{{ event.title }}</h2>
+                    <p>{{ event.date }}</p>
+                    <p>{{ event.description }}</p>
+                </div>
+            {% empty %}
+                <p>Событий пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

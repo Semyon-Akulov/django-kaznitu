@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% endblock %}
+{% block content %}
+    <nav>
+    <a href="{% url 'home' %}" {% if request.path == '/' %} class="active" {% endif %}>Главная</a>
+    <a href="{% url 'news-list' %}" {% if request.path == '/news/' %} class="active" {% endif %}>Новости</a>
+    <a href="{% url 'projects' %}" {% if request.path == '/projects/' %} class="active" {% endif %}>Проекты</a>
+    <a href="{% url 'researcher-list' %}" {% if request.path == '/researchers/' %} class="active" {% endif %}>Исследователи</a>
+    <a href="{% url 'article-list' %}" {% if request.path == '/articles/' %} class="active" {% endif %}>Научные статьи</a>
+    <a href="{% url 'event-list' %}" {% if request.path == '/events/' %} class="active" {% endif %}>События</a>
+</nav>
+    <section class="news-section">
+        <h2> Новости</h2>
+        {% for news in news_list %}
+            <article class="news-item">
+                <h3>{{ news.title }}</h3>
+                {% if news.photo %}
+                    <img src="{{ news.photo.url }}" alt="{{ news.title }}">
+                {% endif %}
+                <p>{{ news.description }}</p>
+                <p>{{ news.created_at }}</p>
+            </article>
+        {% empty %}
+            <p>Новостей пока нет.</p>
+        {% endfor %}
+    </section>
+{% endblock %}
